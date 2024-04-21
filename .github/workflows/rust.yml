@@ -1,0 +1,47 @@
+name: Test and Build Rust
+
+on:
+  push:
+  pull_request:
+    types: [opened, reopened]
+  schedule:
+    # Check if it works with current dependencies (weekly on Wednesday 2:32 UTC)
+    - cron: "32 2 * * 3"
+
+jobs:
+  clippy:
+    name: Clippy
+    runs-on: ubuntu-latest
+    env:
+      CARGO_TERM_COLOR: always
+
+    strategy:
+      matrix:
+        toolchain:
+          - stable
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Rust
+        run: rustup update ${{ matrix.toolchain }} && rustup default ${{ matrix.toolchain }}
+
+      - name: Run clippy
+        run: cargo clippy --verbose --all-targets --all-features -- -D warnings
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    env:
+      CARGO_TERM_COLOR: always
+
+    strategy:
+      matrix:
+        toolchain:
+        - stable
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Tests
+        run: cargo test --all-features -- --color always --nocapture

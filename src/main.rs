@@ -5,5 +5,5 @@ use pest_derive::Parser;
 struct MyParser;
 
 fn main() {
-    println!("Hello, world!");
+    let _parser = MyParser;
 }
