@@ -30,7 +30,7 @@ jobs:
         run: cargo clippy --verbose --all-targets --all-features -- -D warnings
 
   test:
-    name: Test blocking
+    name: Test
     runs-on: ubuntu-latest
     env:
       CARGO_TERM_COLOR: always
@@ -43,5 +43,5 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Run blocking dirty tests
+      - name: Run Tests
         run: cargo test --all-features -- --color always --nocapture
