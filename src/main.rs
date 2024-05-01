@@ -6,16 +6,13 @@ use pest_derive::Parser;
 pub struct MyParser;
 
 fn main() {
-    let tokens = MyParser::parse(Rule::command_line, "cd -a|ls|grep")
-                                .unwrap_or_else(|e| panic!("{}", e));
-
+    let tokens =
+        MyParser::parse(Rule::command_line, "cd -a|ls|grep").unwrap_or_else(|e| panic!("{}", e));
     for token in tokens {
-
         println!("{:?}", token.as_rule());
         println!("{:?}", token.as_span());
         println!("{}", token.as_str())
-        
-    } 
+    }
 }
 
 #[cfg(test)]
@@ -52,4 +49,3 @@ mod tests {
         assert!(MyParser::parse(Rule::command_line, input).is_err());
     }
 }
-
