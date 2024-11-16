@@ -6,6 +6,7 @@ use pest_derive::Parser;
 #[derive(Parser)]
 #[grammar = "./parser_files/code.pest"] // relative to src
 pub struct MyParser;
+pub struct MyParser;
 
 fn main() -> Result<(), std::io::Error> {
     let mut commands = String::new();
