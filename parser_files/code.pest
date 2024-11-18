@@ -4,7 +4,7 @@ command_line = _{command_single_line ~ (pipe ~ command_single_line)* }
 
 pipe = _{WHITESPACE* ~ "|" ~ WHITESPACE*}
 
-command_single_line = _{command ~ options* ~ arguments* ~ !(options | todo_parse) }
+command_single_line = _{command ~ options* ~ arguments* ~ !(options) ~ redirections* ~ file*}	
 
 command = @{!WHITESPACE ~ ASCII_ALPHA_LOWER+ ~ !options}
 
@@ -12,4 +12,8 @@ options = @{("--" | "-") ~ ASCII_ALPHA_LOWER+ }
 
 arguments = @{!WHITESPACE ~ ASCII_ALPHA_LOWER+ ~ !options}
 
-todo_parse = _{"&&" | "||" | ">" | "<"}
+redirections = @{">" | "<" | ">>" | "<<"}
+
+file = @{ASCII_ALPHA_LOWER+ ~ "." ~ ASCII_ALPHA_LOWER+}
+
+todo_parse = _{"&&" | "||"}

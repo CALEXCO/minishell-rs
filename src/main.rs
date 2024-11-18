@@ -1,18 +1,22 @@
+use std::io;
+
 use pest::Parser;
 use pest_derive::Parser;
 
 #[derive(Parser)]
 #[grammar = "./parser_files/code.pest"] // relative to src
 pub struct MyParser;
+fn main() -> Result<(), std::io::Error> {
+    let mut commands = String::new();
+    let _input = io::stdin().read_line(&mut commands).unwrap();
 
-fn main() {
-    let tokens =
-        MyParser::parse(Rule::command_line, "cd -a|ls|grep").unwrap_or_else(|e| panic!("{}", e));
+    let tokens = MyParser::parse(Rule::command_line, &commands).unwrap_or_else(|e| panic!("{}", e));
+
     for token in tokens {
-        println!("{:?}", token.as_rule());
-        println!("{:?}", token.as_span());
-        println!("{}", token.as_str())
+        println!("{:?}", token.as_str())
     }
+
+    Ok(())
 }
 
 #[cfg(test)]
