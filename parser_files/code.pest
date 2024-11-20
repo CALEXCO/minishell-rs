@@ -1,19 +1,14 @@
-WHITESPACE =_{" " | "\t" }
+WHITESPACE = _{ " " | "\t" }
 
-command_line = _{command_single_line ~ (pipe ~ command_single_line)* }
+command_line = _{ command_with_flags_and_args ~ (pipe ~ command_with_flags_and_args)* }
 
-pipe = _{WHITESPACE* ~ "|" ~ WHITESPACE*}
+pipe = _{ WHITESPACE* ~ "|" ~ WHITESPACE* }
 
-command_single_line = _{command ~ options* ~ arguments* ~ !(options) ~ redirections* ~ file*}	
+command_with_flags_and_args = @{ command ~ (WHITESPACE+ ~ (options | arguments))* }
 
-command = @{!WHITESPACE ~ ASCII_ALPHA_LOWER+ ~ !options}
+command = @{ ASCII_ALPHA_LOWER+ }  // El nombre del comando (ej: "ls", "grep")
 
-options = @{("--" | "-") ~ ASCII_ALPHA_LOWER+ }
+options = @{ ("--" | "-") ~ ASCII_ALPHA_LOWER+ }  // Opciones (ej: "-l", "--ignore-case")
 
-arguments = @{!WHITESPACE ~ ASCII_ALPHA_LOWER+ ~ !options}
+arguments = @{ ASCII_ALPHANUMERIC+ }  // Argumentos (ej: "file.txt")
 
-redirections = @{">" | "<" | ">>" | "<<"}
-
-file = @{ASCII_ALPHA_LOWER+ ~ "." ~ ASCII_ALPHA_LOWER+}
-
-todo_parse = _{"&&" | "||"}
