@@ -17,21 +17,20 @@ fn main() -> Result<(), std::io::Error> {
 
         let _input = io::stdin().read_line(&mut commands).unwrap();
 
-        let tokens = MyParser::parse(Rule::command_line, &commands).unwrap_or_else(|e| panic!("{}", e));
-    
+        let tokens =
+            MyParser::parse(Rule::command_line, &commands).unwrap_or_else(|e| panic!("{}", e));
+
         for token in tokens {
             println!("{:?}", token.as_rule());
             println!("{:?}", token.as_str());
 
             argvv.push(token.as_str().to_string());
-            
+
             println!("{:?}", argvv);
-            
         }
 
         commands.clear();
     }
-
 
     Ok(())
 }
