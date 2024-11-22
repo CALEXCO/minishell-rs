@@ -31,8 +31,6 @@ fn main() -> Result<(), std::io::Error> {
 
         commands.clear();
     }
-
-    Ok(())
 }
 
 #[cfg(test)]
