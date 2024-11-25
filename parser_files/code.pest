@@ -1,6 +1,6 @@
 WHITESPACE =_{" " | "\t" }
 
-command_line = _{command_single_line ~ (pipe ~ command_single_line)* }
+command_line = _{(command_single_line ~ (pipe ~ command_single_line)*)* }
 
 pipe = _{WHITESPACE* ~ "|" ~ WHITESPACE*}
 
