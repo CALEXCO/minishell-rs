@@ -7,7 +7,6 @@ use pest_derive::Parser;
 #[grammar = "./parser_files/code.pest"] // relative to src
 pub struct MyParser;
 
-
 #[derive(Debug, Default)]
 struct MinishellCommand {
     command: String,
@@ -15,35 +14,33 @@ struct MinishellCommand {
 }
 
 impl MinishellCommand {
-    
-    fn new(command: String) -> Self{
-        Self { command: command, arguments: Vec::new() }
+    fn new(command: String) -> Self {
+        Self {
+            command: command,
+            arguments: Vec::new(),
+        }
     }
 
-    fn add_argument(&mut self,argument: String){
+    fn add_argument(&mut self, argument: String) {
         self.arguments.push(argument);
     }
 
-    fn to_string(&self) -> String{
+    fn to_string(&self) -> String {
         let mut res = String::new();
 
         res.push_str(format!("The name of the command is: {}\n", self.command).as_str());
 
         let mut num_argum = 1;
-        for argument in &self.arguments{
+        for argument in &self.arguments {
             res.push_str(format!("Arg{num_argum}: {argument}\n").as_str());
-            num_argum+=1;
+            num_argum += 1;
         }
 
         return res;
     }
-
 }
 
-
 fn main() -> Result<(), std::io::Error> {
-    
-
     loop {
         let mut commands = String::new();
         let mut argvv: Vec<String> = Vec::new();
@@ -61,19 +58,20 @@ fn main() -> Result<(), std::io::Error> {
             println!("{:?}", token.as_rule());
             println!("{:?}", token.as_str());
 
-            let mut single_command: MinishellCommand = MinishellCommand {..Default::default()};
+            let mut single_command: MinishellCommand = MinishellCommand {
+                ..Default::default()
+            };
 
-            
-            if token.as_rule() == Rule::command{
-                let single_command= MinishellCommand::new(token.as_str().to_string()); 
+            if token.as_rule() == Rule::command {
+                let single_command = MinishellCommand::new(token.as_str().to_string());
                 allMinishellCommand.push(single_command);
-            }else {
+            } else {
                 // single_command.add_argument(token.as_str().to_string());
-                match allMinishellCommand.pop(){
+                match allMinishellCommand.pop() {
                     Some(mut minishell_command) => {
                         minishell_command.add_argument(token.as_str().to_string());
                         allMinishellCommand.push(minishell_command);
-                    },
+                    }
                     None => (),
                 }
             }
@@ -81,7 +79,7 @@ fn main() -> Result<(), std::io::Error> {
             println!("{:?}", argvv);
         }
 
-        for minishell_command in allMinishellCommand{
+        for minishell_command in allMinishellCommand {
             println!("{}", minishell_command.to_string())
         }
     }
